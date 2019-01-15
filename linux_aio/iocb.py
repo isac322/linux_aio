@@ -67,6 +67,7 @@ class IOCBFlag(CtypesEnum):
     IOPRIO = 1 << 1
 
 
+# TODO: detail description (e.g. minimum required linux version)
 class IOCBRWFlag(CtypesEnum):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
     HIPRI = 1 << 0 if sys.version_info < (3, 7) else os.RWF_HIPRI
@@ -74,3 +75,19 @@ class IOCBRWFlag(CtypesEnum):
     SYNC = 1 << 2 if sys.version_info < (3, 7) else os.RWF_SYNC
     NOWAIT = 1 << 3 if sys.version_info < (3, 7) else os.RWF_NOWAIT
     APPEND = 1 << 4
+
+
+# TODO: detail description (e.g. minimum required linux version, how priority value works)
+class IOCBPriorityClass(CtypesEnum):
+    """ priority class. from linux code (/include/linux/ioprio.h) """
+    NONE = 0
+    RT = 1
+    BE = 2
+    IDLE = 3
+
+
+IOPRIO_CLASS_SHIFT = 13
+
+
+def gen_io_priority(priority_class: IOCBPriorityClass, priority: int) -> int:
+    return (priority_class << IOPRIO_CLASS_SHIFT) | priority
