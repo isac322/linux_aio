@@ -6,7 +6,6 @@ from ctypes.util import find_library
 from .iocb import IOCB
 
 # syscall numbers FIXME: dynamic way
-
 __NR_io_setup = 206
 __NR_io_destroy = 207
 __NR_io_getevents = 208

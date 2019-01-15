@@ -40,7 +40,7 @@ class IOCB(Structure):
 
 
 # Define the types we need.
-class CtypesEnum(IntEnum):
+class _CtypesEnum(IntEnum):
     """A ctypes-compatible IntEnum superclass."""
 
     @classmethod
@@ -48,7 +48,7 @@ class CtypesEnum(IntEnum):
         return int(obj)
 
 
-class IOCBCMD(CtypesEnum):
+class IOCBCMD(_CtypesEnum):
     PREAD = 0
     PWRITE = 1
     FSYNC = 2
@@ -61,14 +61,14 @@ class IOCBCMD(CtypesEnum):
     PWRITEV = 8
 
 
-class IOCBFlag(CtypesEnum):
+class IOCBFlag(_CtypesEnum):
     """ flags for :attr:`IOCB.aio_flags` """
     RESFD = 1 << 0
     IOPRIO = 1 << 1
 
 
 # TODO: detail description (e.g. minimum required linux version)
-class IOCBRWFlag(CtypesEnum):
+class IOCBRWFlag(_CtypesEnum):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
     HIPRI = 1 << 0 if sys.version_info < (3, 7) else os.RWF_HIPRI
     DSYNC = 1 << 1 if sys.version_info < (3, 7) else os.RWF_DSYNC
@@ -78,7 +78,7 @@ class IOCBRWFlag(CtypesEnum):
 
 
 # TODO: detail description (e.g. minimum required linux version, how priority value works)
-class IOCBPriorityClass(CtypesEnum):
+class IOCBPriorityClass(_CtypesEnum):
     """ priority class. from linux code (/include/linux/ioprio.h) """
     NONE = 0
     RT = 1
