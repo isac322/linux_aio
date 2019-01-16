@@ -5,7 +5,7 @@ from cffi import FFI
 ffibuilder = FFI()
 
 ffibuilder.set_source(
-        'linux_aio._syscall',
+        'linux_aio.raw._syscall',
         r'#include <sys/syscall.h>'
 )
 

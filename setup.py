@@ -10,6 +10,6 @@ setup(
         provides=['linux_aio'],
         platforms='Linux',
         setup_requires=['cffi>=1.0.0'],
-        cffi_modules=['linux_aio/syscall.py:ffibuilder'],
+        cffi_modules=['linux_aio/raw/syscall.py:ffibuilder'],
         install_requires=['cffi>=1.0.0'],
 )
