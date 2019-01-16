@@ -54,6 +54,10 @@ def io_submit(context: aio_context_t, num_jobs: c_long, iocb_p_list: iocb_pp) ->
 
 def io_getevents(context: aio_context_t, min_jobs: c_long, max_jobs: c_long,
                  events: io_event_p, timeout: timespec_p) -> c_int:
+    """
+    return value can be less than min_jobs. because io_getevents can be interrupted by signal during processing
+    (io_pgetevents does not, but not fully implemented)
+    """
     return _syscall(lib.SYS_io_getevents, context, min_jobs, max_jobs, events, timeout)
 
 
