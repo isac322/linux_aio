@@ -5,11 +5,11 @@ import sys
 from ctypes import Structure, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, sizeof
 from enum import IntEnum
 
-PADDED = {
-    (4, 'little'): lambda w, x, y: [(x, w), (y, c_uint)],
-    (8, 'little'): lambda w, x, y: [(x, w), (y, w)],
-    (8, 'big'): lambda w, x, y: [(y, c_uint), (x, w)],
-    (4, 'big'): lambda w, x, y: [(y, c_uint), (x, w)],
+_PADDED = {
+    (4, 'little'): lambda w, x, y: ((x, w), (y, c_uint)),
+    (8, 'little'): lambda w, x, y: ((x, w), (y, w)),
+    (8, 'big'): lambda w, x, y: ((y, c_uint), (x, w)),
+    (4, 'big'): lambda w, x, y: ((y, c_uint), (x, w)),
 }[(sizeof(c_ulong), sys.byteorder)]
 
 
@@ -17,7 +17,7 @@ class IOCB(Structure):
     _fields_ = (
         # internal fields used by the kernel
         ('aio_data', c_uint64),
-        *PADDED(c_uint32, 'aio_key', 'aio_rw_flags'),
+        *_PADDED(c_uint32, 'aio_key', 'aio_rw_flags'),
 
         # common fields
         ('aio_lio_opcode', c_uint16),
@@ -34,7 +34,7 @@ class IOCB(Structure):
         # flags for IOCB
         ('aio_flags', c_uint32),
 
-        # if the IOCB_FLAG_RESFD flag of "aio_flags" is set, this is an eventfd to signal AIO readiness to
+        # if the IOCBFlag.RESFD flag of "aio_flags" is set, this is an eventfd to signal AIO readiness to
         ('aio_resfd', c_uint32),
     )
 

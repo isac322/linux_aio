@@ -3,7 +3,7 @@
 from ctypes import get_errno
 from errno import EAGAIN, EBADF, EFAULT, EINTR, EINVAL, ENOMEM, ENOSYS, errorcode
 from os import strerror
-from typing import Dict, Mapping
+from typing import Dict, Mapping, NoReturn
 
 setup_err_map: Dict[int, str] = {
     EAGAIN:
@@ -75,7 +75,7 @@ submit_err_map: Dict[int, str] = {
 """
 
 
-def handle_error(error_map: Mapping[int, str], *args) -> None:
+def handle_error(error_map: Mapping[int, str], *args) -> NoReturn:
     err: int = get_errno()
 
     def_msg = f'{errorcode[err]}, {strerror(err)}.'

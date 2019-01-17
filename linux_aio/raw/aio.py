@@ -4,15 +4,9 @@ from ctypes import CDLL, POINTER, Structure, c_int, c_int64, c_long, c_uint, c_u
 from ctypes.util import find_library
 from typing import Optional
 
-# noinspection PyUnresolvedReferences
 from ._syscall import lib
 from .error import cancel_err_map, destroy_err_map, get_events_err_map, handle_error, setup_err_map, submit_err_map
 from .iocb import IOCB
-
-__all__ = (
-    'Timespec', 'IOEvent', 'aio_context_t', 'iocb_p', 'io_event_p',
-    'io_setup', 'io_destroy', 'io_submit', 'io_getevents', 'io_cancel'
-)
 
 with open('/proc/sys/fs/aio-max-nr') as fp:
     _JOB_LIMIT = int(fp.read())
@@ -59,7 +53,7 @@ def io_destroy(context: aio_context_t) -> None:
         handle_error(destroy_err_map, context.value)
 
 
-def io_submit(context: aio_context_t, num_jobs: c_long, iocb_p_list: iocb_pp) -> c_int:
+def io_submit(context: aio_context_t, num_jobs: c_long, iocb_p_list: iocb_pp) -> int:
     ret = _syscall(lib.SYS_io_submit, context, num_jobs, iocb_p_list)
 
     if ret < 0:
@@ -69,7 +63,7 @@ def io_submit(context: aio_context_t, num_jobs: c_long, iocb_p_list: iocb_pp) ->
 
 
 def io_getevents(context: aio_context_t, min_jobs: c_long, max_jobs: c_long,
-                 events: io_event_p, timeout: Optional[timespec_p]) -> c_int:
+                 events: io_event_p, timeout: Optional[timespec_p]) -> int:
     """
     return value can be less than min_jobs. because io_getevents can be interrupted by signal during processing
     (io_pgetevents does not, but not fully implemented)
