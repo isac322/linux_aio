@@ -4,7 +4,7 @@ from ctypes import Structure, _SimpleCData, c_int16, c_int64, c_uint, c_uint16, 
 from enum import IntEnum
 from typing import Tuple, Type, Union, overload
 
-__all__ = ('IOCB', 'IOCBCMD', 'IOCBFlag', 'IOCBPriorityClass', 'IOCBRWFlag', 'gen_io_priority')
+__all__ = ('IOCB', 'IOCBCMD', 'IOCBFlag', 'IOCBPriorityClass', 'IOCBRWFlag', 'gen_io_priority', 'IOPRIO_CLASS_SHIFT')
 
 _ot = _SimpleCData
 
@@ -111,6 +111,9 @@ class IOCBPriorityClass(_CtypesEnum):
     RT = ...
     BE = ...
     IDLE = ...
+
+
+IOPRIO_CLASS_SHIFT: int = ...
 
 
 def gen_io_priority(priority_class: IOCBPriorityClass, priority: int) -> int: ...
