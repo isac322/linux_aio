@@ -1,6 +1,6 @@
 # coding: UTF-8
 
-from ctypes import CDLL, POINTER, Structure, c_int, c_int64, c_long, c_uint, c_uint64, c_ulong
+from ctypes import CDLL, POINTER, Structure, c_int64, c_long, c_uint, c_uint64, c_ulong
 from ctypes.util import find_library
 from typing import Optional
 
