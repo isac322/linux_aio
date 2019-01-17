@@ -2,14 +2,16 @@
 
 from cffi import FFI
 
-ffibuilder = FFI()
+__all__ = ()
 
-ffibuilder.set_source(
+_ffibuilder = FFI()
+
+_ffibuilder.set_source(
         'linux_aio.raw._syscall',
         r'#include <sys/syscall.h>'
 )
 
-ffibuilder.cdef(r'''
+_ffibuilder.cdef(r'''
     #define SYS_io_setup ...
     #define SYS_io_destroy ...
     #define SYS_io_getevents ...
