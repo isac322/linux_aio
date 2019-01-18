@@ -1,7 +1,7 @@
 # coding: UTF-8
 
 from ctypes import Structure, _SimpleCData, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64
-from enum import IntEnum
+from enum import IntEnum, IntFlag
 from typing import Tuple, Type, Union, overload
 
 __all__ = ('IOCB', 'IOCBCMD', 'IOCBFlag', 'IOCBPriorityClass', 'IOCBRWFlag', 'gen_io_priority', 'IOPRIO_CLASS_SHIFT')
@@ -68,14 +68,14 @@ class IOCB(Structure):
 
 
 # Define the types we need.
-class _CtypesEnum(IntEnum):
+class _CtypesEnum:
     """A ctypes-compatible IntEnum superclass."""
 
     @classmethod
     def from_param(cls, obj) -> int: ...
 
 
-class IOCBCMD(_CtypesEnum):
+class IOCBCMD(_CtypesEnum, IntEnum):
     PREAD = ...
     PWRITE = ...
     FSYNC = ...
@@ -88,14 +88,14 @@ class IOCBCMD(_CtypesEnum):
     PWRITEV = ...
 
 
-class IOCBFlag(_CtypesEnum):
+class IOCBFlag(_CtypesEnum, IntFlag):
     """ flags for :attr:`IOCB.aio_flags` """
     RESFD = ...
     IOPRIO = ...
 
 
 # TODO: detail description (e.g. minimum required linux version)
-class IOCBRWFlag(_CtypesEnum):
+class IOCBRWFlag(_CtypesEnum, IntFlag):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
     HIPRI = ...
     DSYNC = ...
@@ -105,7 +105,7 @@ class IOCBRWFlag(_CtypesEnum):
 
 
 # TODO: detail description (e.g. minimum required linux version, how priority value works)
-class IOCBPriorityClass(_CtypesEnum):
+class IOCBPriorityClass(_CtypesEnum, IntEnum):
     """ priority class. from linux code (/include/linux/ioprio.h) """
     NONE = ...
     RT = ...

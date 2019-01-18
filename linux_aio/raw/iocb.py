@@ -3,7 +3,7 @@
 import os
 import sys
 from ctypes import Structure, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, sizeof
-from enum import IntEnum
+from enum import IntEnum, IntFlag
 
 _PADDED = {
     (4, 'little'): lambda w, x, y: ((x, w), (y, c_uint)),
@@ -40,15 +40,15 @@ class IOCB(Structure):
 
 
 # Define the types we need.
-class _CtypesEnum(IntEnum):
-    """A ctypes-compatible IntEnum superclass."""
+class _CtypesEnum:
+    """A ctypes-compatible superclass."""
 
     @classmethod
     def from_param(cls, obj) -> int:
         return int(obj)
 
 
-class IOCBCMD(_CtypesEnum):
+class IOCBCMD(_CtypesEnum, IntEnum):
     PREAD = 0
     PWRITE = 1
     FSYNC = 2
@@ -61,14 +61,14 @@ class IOCBCMD(_CtypesEnum):
     PWRITEV = 8
 
 
-class IOCBFlag(_CtypesEnum):
+class IOCBFlag(_CtypesEnum, IntFlag):
     """ flags for :attr:`IOCB.aio_flags` """
     RESFD = 1 << 0
     IOPRIO = 1 << 1
 
 
 # TODO: detail description (e.g. minimum required linux version)
-class IOCBRWFlag(_CtypesEnum):
+class IOCBRWFlag(_CtypesEnum, IntFlag):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
     HIPRI = 1 << 0 if sys.version_info < (3, 7) else os.RWF_HIPRI
     DSYNC = 1 << 1 if sys.version_info < (3, 7) else os.RWF_DSYNC
@@ -78,7 +78,7 @@ class IOCBRWFlag(_CtypesEnum):
 
 
 # TODO: detail description (e.g. minimum required linux version, how priority value works)
-class IOCBPriorityClass(_CtypesEnum):
+class IOCBPriorityClass(_CtypesEnum, IntEnum):
     """ priority class. from linux code (/include/linux/ioprio.h) """
     NONE = 0
     RT = 1
