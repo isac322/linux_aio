@@ -10,10 +10,8 @@ from .raw import IOEvent
 class AIOEvent:
     __slots__ = ('_event',)
 
-    _event: IOEvent
-
     def __init__(self, event: IOEvent) -> None:
-        self._event = event
+        self._event = event  # type: IOEvent
 
     @property
     def aio_block(self) -> AIOBlock:

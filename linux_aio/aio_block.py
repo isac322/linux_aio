@@ -11,17 +11,14 @@ BUF_TYPE = Union[bytearray, bytes, None]
 class AIOBlock:
     __slots__ = ('_iocb', '_buffer', '_py_obj')
 
-    _iocb: IOCB
-    _buffer: Optional[BUF_TYPE]
-    _py_obj: py_object  # to avoid garbage collection
-
     def __init__(self, fd: int, cmd: IOCBCMD, buffer: Union[str, BUF_TYPE] = None, offset: int = 0) -> None:
         if isinstance(buffer, str):
-            self._buffer = buffer.encode()
+            self._buffer = buffer.encode()  # type: Optional[BUF_TYPE]
         else:
-            self._buffer = buffer
-        self._py_obj = py_object(self)
-        self._iocb = IOCB(
+            self._buffer = buffer  # type: Optional[BUF_TYPE]
+        # to avoid garbage collection
+        self._py_obj = py_object(self)  # type: py_object
+        self._iocb = IOCB(  # type: IOCB
                 aio_lio_opcode=cmd,
                 aio_fildes=fd,
                 aio_offset=offset,
@@ -42,7 +39,7 @@ class AIOBlock:
         elif buffer is None:
             addr = 0  # null pointer
         else:
-            raise NotImplementedError(f'Unknown buffer type: {type(buffer)}')
+            raise NotImplementedError('Unknown buffer type: {}'.format(type(buffer)))
 
         return addr
 

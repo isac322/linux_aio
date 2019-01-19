@@ -19,12 +19,9 @@ def create_c_array(c_type: Any, elements: Iterable[Any], length: int = None) -> 
 class AIOContext:
     __slots__ = ('_ctx', '_max_jobs')
 
-    _ctx: aio_context_t
-    _max_jobs: int
-
     def __init__(self, max_jobs: int) -> None:
-        self._ctx = aio_context_t()
-        self._max_jobs = max_jobs
+        self._ctx = aio_context_t()  # type: aio_context_t
+        self._max_jobs = max_jobs  # type: int
 
         io_setup(c_uint(max_jobs), pointer(self._ctx))
 
@@ -65,7 +62,7 @@ class AIOContext:
                 c_long(min_jobs),
                 c_long(max_jobs),
                 event_buf,
-                pointer(Timespec(*divmod(timeout_ns, 1_000_000_000))) if timeout_ns > 0 else None
+                pointer(Timespec(*divmod(timeout_ns, 1000000000))) if timeout_ns > 0 else None
         )
 
         return tuple(AIOEvent(event) for event in event_buf[:completed_jobs])

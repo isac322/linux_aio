@@ -12,6 +12,7 @@ matrix:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
       python:
+        - '3.5'
         - '3.6'
     - sudo: required
       services:
@@ -19,6 +20,7 @@ matrix:
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
         PRE_CMD=linux32
       python:
+        - '3.5'
         - '3.6'
 
 install:

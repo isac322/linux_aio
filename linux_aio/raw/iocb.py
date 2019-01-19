@@ -2,7 +2,7 @@
 
 import sys
 from ctypes import Structure, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, sizeof
-from enum import IntEnum, IntFlag
+from enum import IntEnum
 
 _PADDED = {
     (4, 'little'): lambda w, x, y: ((x, w), (y, c_uint)),
@@ -55,7 +55,7 @@ class IOCBCMD(IntEnum):
         return int(obj)
 
 
-class IOCBFlag(IntFlag):
+class IOCBFlag(IntEnum):
     """ flags for :attr:`IOCB.aio_flags` """
     RESFD = 1 << 0
     IOPRIO = 1 << 1
@@ -66,7 +66,7 @@ class IOCBFlag(IntFlag):
 
 
 # TODO: detail description (e.g. minimum required linux version)
-class IOCBRWFlag(IntFlag):
+class IOCBRWFlag(IntEnum):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
     HIPRI = 1 << 0
     DSYNC = 1 << 1
