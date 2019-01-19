@@ -45,7 +45,6 @@ deploy:
   password:
     secure: "WHQGmYXBaNZrD817kt0/EBHBAZxYnhffMajVi9J3XZArtcpmEiHcy1aKUm6eKZWcoE//8libBNddNdEEqaW74uHc8EWZENVXlAzSYZlgQhRwd4f2USPZ7ZSODHZAvpCglMDhW7jtRwXBRlNyajfCLgF9Rf2yerweIQ/JTWA1afIPN1vniioiZjnJswq7/pzeRuE3RoVsX76961HE/PhB4mqAdQKzbFKtNkU2XtLexrpjR2PkYk46659en6OdHzd3eFd6/UTk4MvIICSfMn5nXwAi8ZHzW2TaJ+iQb5KACgpXLd6PP2QaewacB2gFZumGt0+VHGK4gNt8/KUQKQ17cTYk0+KFlZkB5DP2HjL05dWQFl4RC1B0qbPBPwXYBW8ZcjfFFqUNfzvwueZ3EHooyJw+ZITfEdCYG3UR1t6q/MJTGssRctDiUCSvuw1xJm32iDNLMgOdn9XiC0Jes11EHH9kh+oQCI/+ENUxAi5Vhsyev+dylRHF/3TQxf0heQSYerVty1zQ44+ImrJu/TbEQFVPGhJWEIFPd9BDaC9MW34S4y9ZDB8JAbU5hv9U1ut6pAfd/ODoOTXl+K7Qgzu9mZWGiiORGX5BRXtQewlCOG0RZZtcACEvMdofMoZht6+D0OlLwqa62e9j2S3bdD1eOeXKclhRiLAVeVcRrtPpEMw="
   on:
-    tags: true
     all_branches: true
   distributions: 'sdist'
   skip_cleanup: true
