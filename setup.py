@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
         name='linux_aio',
-        version='0.1.0',
+        version='0.1.1',
         author='Byeonghoon Yoo',
         author_email='bh322yoo@gmail.com',
         description='Linux aio ABI wrapper',
