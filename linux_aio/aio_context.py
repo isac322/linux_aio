@@ -29,8 +29,7 @@ class AIOContext:
         io_setup(c_uint(max_jobs), pointer(self._ctx))
 
     def __del__(self) -> None:
-        if not self.closed:
-            self.close()
+        self.close()
 
     @property
     def closed(self) -> bool:
@@ -38,8 +37,9 @@ class AIOContext:
 
     def close(self) -> None:
         """will block on the completion of all operations that could not be canceled"""
-        io_destroy(self._ctx)
-        self._ctx = aio_context_t()
+        if not self.closed:
+            io_destroy(self._ctx)
+            self._ctx = aio_context_t()
 
     def cancel(self, block: AIOBlock) -> AIOEvent:
         result = IOEvent()
