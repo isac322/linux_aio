@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
         name='linux_aio',
-        version='0.1.1',
+        version='0.2.0',
         author='Byeonghoon Yoo',
         author_email='bh322yoo@gmail.com',
         description='Linux aio ABI wrapper',
@@ -14,7 +14,7 @@ setup(
         url="https://github.com/isac322/linux_aio",
         packages=find_packages(),
         classifiers=[
-            'Development Status :: 2 - Pre-Alpha',
+            'Development Status :: 3 - Alpha',
             'Intended Audience :: Developers',
             'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
             'Natural Language :: English',
