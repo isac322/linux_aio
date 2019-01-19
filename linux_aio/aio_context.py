@@ -50,15 +50,12 @@ class AIOContext:
         return AIOEvent(result)
 
     def submit(self, *blocks: AIOBlock) -> int:
-        # TODO: use ret
         # noinspection PyProtectedMember
-        ret = io_submit(
+        return io_submit(
                 self._ctx,
                 c_long(len(blocks)),
                 create_c_array(iocb_p, (pointer(block._iocb) for block in blocks))
         )
-
-        return ret
 
     def get_events(self, min_jobs: int, max_jobs: int, timeout_ns: int = 0) -> Tuple[AIOEvent, ...]:
         event_buf = create_c_array(IOEvent, (), max_jobs)
