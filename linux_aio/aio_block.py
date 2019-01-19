@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from ctypes import addressof, c_char, c_char_p, c_void_p, cast, py_object
-from typing import Optional, TypeVar
+from typing import Optional, Union
 
 from .raw import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOPRIO_CLASS_SHIFT, gen_io_priority
 
-BUF_TYPE = TypeVar('BUF_TYPE', bytearray, bytes, memoryview)
+BUF_TYPE = Union[bytearray, bytes, None]
 
 
 class AIOBlock:
@@ -15,15 +15,18 @@ class AIOBlock:
     _buffer: Optional[BUF_TYPE]
     _py_obj: py_object  # to avoid garbage collection
 
-    def __init__(self, fd: int, cmd: IOCBCMD, buffer: BUF_TYPE = None, offset: int = 0) -> None:
-        self._buffer = buffer
+    def __init__(self, fd: int, cmd: IOCBCMD, buffer: Union[str, BUF_TYPE] = None, offset: int = 0) -> None:
+        if isinstance(buffer, str):
+            self._buffer = buffer.encode()
+        else:
+            self._buffer = buffer
         self._py_obj = py_object(self)
         self._iocb = IOCB(
                 aio_lio_opcode=cmd,
                 aio_fildes=fd,
                 aio_offset=offset,
-                aio_nbytes=len(buffer),
-                aio_buf=self._inner_addr_of(buffer),
+                aio_nbytes=len(self._buffer),
+                aio_buf=self._inner_addr_of(self._buffer),
                 aio_data=addressof(self._py_obj)
         )
 
@@ -32,7 +35,7 @@ class AIOBlock:
 
     @classmethod
     def _inner_addr_of(cls, buffer: Optional[BUF_TYPE]) -> int:
-        if isinstance(buffer, bytearray) or isinstance(buffer, memoryview):
+        if isinstance(buffer, bytearray):
             addr = addressof(c_char.from_buffer(buffer))
         elif isinstance(buffer, bytes):
             addr = cast(c_char_p(buffer), c_void_p).value

@@ -21,6 +21,10 @@ class AIOEvent:
     def buffer(self) -> Optional[BUF_TYPE]:
         return self.aio_block.buffer
 
+    def stripped_buffer(self) -> Optional[BUF_TYPE]:
+        """`\0` pads removed buffer"""
+        return self.buffer.rstrip(b'\0')
+
     @property
     def response(self) -> int:
         return self._event.res
