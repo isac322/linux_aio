@@ -74,6 +74,8 @@ Examples can be found in the code in the [test directory](test).
 
 ## Evaluation
 
+[Experiment script](https://gist.github.com/isac322/8606f5c464fa390cb88b47354981cdab) (requires python 3.7)
+
 ### Setup
 
 - Distribution: Ubuntu Server 16.04.5 LTS

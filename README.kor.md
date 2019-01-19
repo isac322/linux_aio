@@ -75,6 +75,8 @@ POSIX AIO의 API들은 `aio_` 접두사를 가지지만, Linux Kernel AIO는 `io
 
 ## 성능 비교
 
+[Experiment script](https://gist.github.com/isac322/8606f5c464fa390cb88b47354981cdab) (requires python 3.7)
+
 ### 실험 환경
 
 - Distribution: Ubuntu Server 16.04.5 LTS
