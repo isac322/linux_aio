@@ -1,6 +1,8 @@
 notifications:
   email: false
 
+dist: xenial
+
 language: python
 
 matrix:

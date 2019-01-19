@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e -x
 
+py_vers=(37)
+
 # Compile wheels
-for PYBIN in /opt/python/cp37-cp37m/bin /opt/python/cp36-cp36m/bin; do
+for ver in "${py_vers[@]}"; do
+	PYBIN="/opt/python/cp${ver}-cp${ver}m/bin"
     "${PYBIN}/pip" install -r /io/requirements.txt
     "${PYBIN}/pip" wheel /io/ -w wheelhouse/ --no-deps
 done
@@ -13,6 +16,7 @@ for whl in wheelhouse/*.whl; do
 done
 
 # Install packages and test
-for PYBIN in /opt/python/cp37-cp37m/bin /opt/python/cp36-cp36m/bin; do
+for ver in "${py_vers[@]}"; do
+	PYBIN="/opt/python/cp${ver}-cp${ver}m/bin"
     "${PYBIN}/pip" install linux_aio --no-index -f /io/wheelhouse
 done

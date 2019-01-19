@@ -70,10 +70,10 @@ class IOCBFlag(_CtypesEnum, IntFlag):
 # TODO: detail description (e.g. minimum required linux version)
 class IOCBRWFlag(_CtypesEnum, IntFlag):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
-    HIPRI = 1 << 0 if sys.version_info < (3, 7) else os.RWF_HIPRI
-    DSYNC = 1 << 1 if sys.version_info < (3, 7) else os.RWF_DSYNC
-    SYNC = 1 << 2 if sys.version_info < (3, 7) else os.RWF_SYNC
-    NOWAIT = 1 << 3 if sys.version_info < (3, 7) else os.RWF_NOWAIT
+    HIPRI = 1 << 0 if not hasattr(os, 'RWF_HIPRI') else os.RWF_HIPRI
+    DSYNC = 1 << 1 if not hasattr(os, 'RWF_DSYNC') else os.RWF_DSYNC
+    SYNC = 1 << 2 if not hasattr(os, 'RWF_SYNC') else os.RWF_SYNC
+    NOWAIT = 1 << 3 if not hasattr(os, 'RWF_NOWAIT') else os.RWF_NOWAIT
     APPEND = 1 << 4
 
 
