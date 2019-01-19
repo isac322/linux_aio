@@ -2,7 +2,6 @@
 
 from ctypes import CDLL, POINTER, Structure, c_int64, c_long, c_uint, c_uint64, c_ulong
 from ctypes.util import find_library
-from typing import Optional
 
 from ._syscall import lib
 from .error import cancel_err_map, destroy_err_map, get_events_err_map, handle_error, setup_err_map, submit_err_map
@@ -63,7 +62,7 @@ def io_submit(context: aio_context_t, num_jobs: c_long, iocb_p_list: iocb_pp) ->
 
 
 def io_getevents(context: aio_context_t, min_jobs: c_long, max_jobs: c_long,
-                 events: io_event_p, timeout: Optional[timespec_p]) -> int:
+                 events: io_event_p, timeout: timespec_p) -> int:
     """
     return value can be less than min_jobs. because io_getevents can be interrupted by signal during processing
     (io_pgetevents does not, but not fully implemented)

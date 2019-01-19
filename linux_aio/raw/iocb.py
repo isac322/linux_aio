@@ -1,9 +1,8 @@
 # coding: UTF-8
 
-import os
 import sys
 from ctypes import Structure, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, sizeof
-from enum import IntEnum, IntFlag
+from enum import IntEnum
 
 _PADDED = {
     (4, 'little'): lambda w, x, y: ((x, w), (y, c_uint)),
@@ -14,41 +13,35 @@ _PADDED = {
 
 
 class IOCB(Structure):
-    _fields_ = (
-        # internal fields used by the kernel
-        ('aio_data', c_uint64),
-        *_PADDED(c_uint32, 'aio_key', 'aio_rw_flags'),
+    _fields_ = \
+        (
+            # internal fields used by the kernel
+            ('aio_data', c_uint64),
+        ) + \
+        _PADDED(c_uint32, 'aio_key', 'aio_rw_flags') + \
+        (
+            # common fields
+            ('aio_lio_opcode', c_uint16),
+            ('aio_reqprio', c_int16),
+            ('aio_fildes', c_uint32),
 
-        # common fields
-        ('aio_lio_opcode', c_uint16),
-        ('aio_reqprio', c_int16),
-        ('aio_fildes', c_uint32),
+            ('aio_buf', c_uint64),
+            ('aio_nbytes', c_uint64),
+            ('aio_offset', c_int64),
 
-        ('aio_buf', c_uint64),
-        ('aio_nbytes', c_uint64),
-        ('aio_offset', c_int64),
+            # extra parameters
+            ('aio_reserved2', c_uint64),
 
-        # extra parameters
-        ('aio_reserved2', c_uint64),
+            # flags for IOCB
+            ('aio_flags', c_uint32),
 
-        # flags for IOCB
-        ('aio_flags', c_uint32),
+            # if the IOCBFlag.RESFD flag of "aio_flags" is set, this is an eventfd to signal AIO readiness to
+            ('aio_resfd', c_uint32),
 
-        # if the IOCBFlag.RESFD flag of "aio_flags" is set, this is an eventfd to signal AIO readiness to
-        ('aio_resfd', c_uint32),
-    )
-
-
-# Define the types we need.
-class _CtypesEnum:
-    """A ctypes-compatible superclass."""
-
-    @classmethod
-    def from_param(cls, obj) -> int:
-        return int(obj)
+        )
 
 
-class IOCBCMD(_CtypesEnum, IntEnum):
+class IOCBCMD(IntEnum):
     PREAD = 0
     PWRITE = 1
     FSYNC = 2
@@ -60,30 +53,46 @@ class IOCBCMD(_CtypesEnum, IntEnum):
     PREADV = 7
     PWRITEV = 8
 
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
 
-class IOCBFlag(_CtypesEnum, IntFlag):
+
+class IOCBFlag(IntEnum):
     """ flags for :attr:`IOCB.aio_flags` """
     RESFD = 1 << 0
     IOPRIO = 1 << 1
 
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
+
 
 # TODO: detail description (e.g. minimum required linux version)
-class IOCBRWFlag(_CtypesEnum, IntFlag):
+class IOCBRWFlag(IntEnum):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
-    HIPRI = 1 << 0 if not hasattr(os, 'RWF_HIPRI') else os.RWF_HIPRI
-    DSYNC = 1 << 1 if not hasattr(os, 'RWF_DSYNC') else os.RWF_DSYNC
-    SYNC = 1 << 2 if not hasattr(os, 'RWF_SYNC') else os.RWF_SYNC
-    NOWAIT = 1 << 3 if not hasattr(os, 'RWF_NOWAIT') else os.RWF_NOWAIT
+    HIPRI = 1 << 0
+    DSYNC = 1 << 1
+    SYNC = 1 << 2
+    NOWAIT = 1 << 3
     APPEND = 1 << 4
+
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
 
 
 # TODO: detail description (e.g. minimum required linux version, how priority value works)
-class IOCBPriorityClass(_CtypesEnum, IntEnum):
+class IOCBPriorityClass(IntEnum):
     """ priority class. from linux code (/include/linux/ioprio.h) """
     NONE = 0
     RT = 1
     BE = 2
     IDLE = 3
+
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
 
 
 IOPRIO_CLASS_SHIFT = 13

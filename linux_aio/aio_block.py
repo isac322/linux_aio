@@ -1,29 +1,22 @@
 # coding: UTF-8
 
-from __future__ import annotations
-
 from ctypes import addressof, c_char, c_char_p, c_void_p, cast, py_object
-from typing import Optional, Union
 
 from .raw import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOPRIO_CLASS_SHIFT, gen_io_priority
-
-BUF_TYPE = Union[bytearray, bytes, None]
 
 
 class AIOBlock:
     __slots__ = ('_iocb', '_buffer', '_py_obj')
 
-    _iocb: IOCB
-    _buffer: Optional[BUF_TYPE]
-    _py_obj: py_object  # to avoid garbage collection
-
-    def __init__(self, fd: int, cmd: IOCBCMD, buffer: Union[str, BUF_TYPE] = None, offset: int = 0) -> None:
+    def __init__(self, fd: int, cmd: IOCBCMD, buffer: str or bytearray or bytes or None = None, offset: int = 0) \
+            -> None:
         if isinstance(buffer, str):
-            self._buffer = buffer.encode()
+            self._buffer = buffer.encode()  # type: str or bytearray or bytes or None
         else:
-            self._buffer = buffer
-        self._py_obj = py_object(self)
-        self._iocb = IOCB(
+            self._buffer = buffer  # type: str or bytearray or bytes or None
+        # to avoid garbage collection
+        self._py_obj = py_object(self)  # type: py_object
+        self._iocb = IOCB(  # type: IOCB
                 aio_lio_opcode=cmd,
                 aio_fildes=fd,
                 aio_offset=offset,
@@ -36,7 +29,7 @@ class AIOBlock:
         return addressof(self._iocb)
 
     @classmethod
-    def _inner_addr_of(cls, buffer: Optional[BUF_TYPE]) -> int:
+    def _inner_addr_of(cls, buffer: str or bytearray or bytes or None) -> int:
         if isinstance(buffer, bytearray):
             addr = addressof(c_char.from_buffer(buffer))
         elif isinstance(buffer, bytes):
@@ -44,16 +37,16 @@ class AIOBlock:
         elif buffer is None:
             addr = 0  # null pointer
         else:
-            raise NotImplementedError(f'Unknown buffer type: {type(buffer)}')
+            raise NotImplementedError('Unknown buffer type: {}'.format(type(buffer)))
 
         return addr
 
     @property
-    def buffer(self) -> Optional[BUF_TYPE]:
+    def buffer(self) -> str or bytearray or bytes or None:
         return self._buffer
 
     @buffer.setter
-    def buffer(self, buffer: Optional[BUF_TYPE]) -> None:
+    def buffer(self, buffer: str or bytearray or bytes or None) -> None:
         self._buffer = buffer
         self._iocb.aio_buf = self._inner_addr_of(buffer)
 
@@ -113,7 +106,7 @@ class AIOBlock:
         self._iocb.aio_flags = new_flag
 
     @property
-    def res_fd(self) -> Optional[int]:
+    def res_fd(self) -> int or None:
         res_fd = self._iocb.aio_resfd
         if res_fd is not 0:
             return res_fd

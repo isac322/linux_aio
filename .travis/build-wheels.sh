@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -x
 
-py_vers=(37)
+py_vers=(34)
 
 # Compile wheels
 for ver in "${py_vers[@]}"; do

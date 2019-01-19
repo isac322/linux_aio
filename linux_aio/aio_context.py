@@ -1,17 +1,13 @@
 # coding: UTF-8
 
-from __future__ import annotations
-
 from ctypes import c_long, c_uint, pointer
-from types import TracebackType
-from typing import Any, Iterable, Optional, Tuple, Type
 
 from .aio_block import AIOBlock
 from .aio_event import AIOEvent
 from .raw import IOEvent, Timespec, aio_context_t, io_cancel, io_destroy, io_getevents, io_setup, io_submit, iocb_p
 
 
-def create_c_array(c_type: Any, elements: Iterable[Any], length: int = None) -> Any:
+def create_c_array(c_type, elements, length: int = None):
     elements_tup = tuple(elements)
     if length is None:
         length = len(elements_tup)
@@ -21,12 +17,9 @@ def create_c_array(c_type: Any, elements: Iterable[Any], length: int = None) -> 
 class AIOContext:
     __slots__ = ('_ctx', '_max_jobs')
 
-    _ctx: aio_context_t
-    _max_jobs: int
-
     def __init__(self, max_jobs: int) -> None:
-        self._ctx = aio_context_t()
-        self._max_jobs = max_jobs
+        self._ctx = aio_context_t()  # type: aio_context_t
+        self._max_jobs = max_jobs  # type: int
 
         io_setup(c_uint(max_jobs), pointer(self._ctx))
 
@@ -59,7 +52,7 @@ class AIOContext:
                 create_c_array(iocb_p, (pointer(block._iocb) for block in blocks))
         )
 
-    def get_events(self, min_jobs: int, max_jobs: int, timeout_ns: int = 0) -> Tuple[AIOEvent, ...]:
+    def get_events(self, min_jobs: int, max_jobs: int, timeout_ns: int = 0) -> tuple:
         event_buf = create_c_array(IOEvent, (), max_jobs)
 
         completed_jobs = io_getevents(
@@ -67,14 +60,13 @@ class AIOContext:
                 c_long(min_jobs),
                 c_long(max_jobs),
                 event_buf,
-                pointer(Timespec(*divmod(timeout_ns, 1_000_000_000))) if timeout_ns > 0 else None
+                pointer(Timespec(*divmod(timeout_ns, 1000000000))) if timeout_ns > 0 else None
         )
 
         return tuple(AIOEvent(event) for event in event_buf[:completed_jobs])
 
-    def __enter__(self) -> AIOContext:
+    def __enter__(self) -> 'AIOContext':
         return self
 
-    def __exit__(self, t: Optional[Type[BaseException]], value: Optional[BaseException],
-                 traceback: Optional[TracebackType]) -> None:
+    def __exit__(self, t, value, traceback) -> None:
         self.close()
