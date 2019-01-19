@@ -3,15 +3,18 @@
 
 from setuptools import find_packages, setup
 
+with open('README.md') as fp:
+    readme = fp.read()
+
 setup(
         name='linux_aio',
         version='0.2.1',
         author='Byeonghoon Yoo',
         author_email='bh322yoo@gmail.com',
         description='Linux aio ABI wrapper',
-        # long_description=long_description,
-        # long_description_content_type="text/markdown",
-        url="https://github.com/isac322/linux_aio",
+        long_description=readme,
+        long_description_content_type='text/markdown',
+        url='https://github.com/isac322/linux_aio',
         packages=find_packages(),
         classifiers=[
             'Development Status :: 3 - Alpha',
