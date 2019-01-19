@@ -1,7 +1,5 @@
 # coding: UTF-8
 
-from __future__ import annotations
-
 from ctypes import addressof, c_char, c_char_p, c_void_p, cast, py_object
 from typing import Optional, Union
 

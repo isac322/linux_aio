@@ -1,6 +1,5 @@
 # coding: UTF-8
 
-import os
 import sys
 from ctypes import Structure, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, sizeof
 from enum import IntEnum, IntFlag
@@ -39,16 +38,7 @@ class IOCB(Structure):
     )
 
 
-# Define the types we need.
-class _CtypesEnum:
-    """A ctypes-compatible superclass."""
-
-    @classmethod
-    def from_param(cls, obj) -> int:
-        return int(obj)
-
-
-class IOCBCMD(_CtypesEnum, IntEnum):
+class IOCBCMD(IntEnum):
     PREAD = 0
     PWRITE = 1
     FSYNC = 2
@@ -60,30 +50,46 @@ class IOCBCMD(_CtypesEnum, IntEnum):
     PREADV = 7
     PWRITEV = 8
 
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
 
-class IOCBFlag(_CtypesEnum, IntFlag):
+
+class IOCBFlag(IntFlag):
     """ flags for :attr:`IOCB.aio_flags` """
     RESFD = 1 << 0
     IOPRIO = 1 << 1
 
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
+
 
 # TODO: detail description (e.g. minimum required linux version)
-class IOCBRWFlag(_CtypesEnum, IntFlag):
+class IOCBRWFlag(IntFlag):
     """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
-    HIPRI = 1 << 0 if not hasattr(os, 'RWF_HIPRI') else os.RWF_HIPRI
-    DSYNC = 1 << 1 if not hasattr(os, 'RWF_DSYNC') else os.RWF_DSYNC
-    SYNC = 1 << 2 if not hasattr(os, 'RWF_SYNC') else os.RWF_SYNC
-    NOWAIT = 1 << 3 if not hasattr(os, 'RWF_NOWAIT') else os.RWF_NOWAIT
+    HIPRI = 1 << 0
+    DSYNC = 1 << 1
+    SYNC = 1 << 2
+    NOWAIT = 1 << 3
     APPEND = 1 << 4
+
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
 
 
 # TODO: detail description (e.g. minimum required linux version, how priority value works)
-class IOCBPriorityClass(_CtypesEnum, IntEnum):
+class IOCBPriorityClass(IntEnum):
     """ priority class. from linux code (/include/linux/ioprio.h) """
     NONE = 0
     RT = 1
     BE = 2
     IDLE = 3
+
+    @classmethod
+    def from_param(cls, obj) -> int:
+        return int(obj)
 
 
 IOPRIO_CLASS_SHIFT = 13

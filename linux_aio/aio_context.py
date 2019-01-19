@@ -1,7 +1,5 @@
 # coding: UTF-8
 
-from __future__ import annotations
-
 from ctypes import c_long, c_uint, pointer
 from types import TracebackType
 from typing import Any, Iterable, Optional, Tuple, Type
@@ -72,7 +70,7 @@ class AIOContext:
 
         return tuple(AIOEvent(event) for event in event_buf[:completed_jobs])
 
-    def __enter__(self) -> AIOContext:
+    def __enter__(self) -> 'AIOContext':
         return self
 
     def __exit__(self, t: Optional[Type[BaseException]], value: Optional[BaseException],
