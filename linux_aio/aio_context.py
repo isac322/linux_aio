@@ -19,6 +19,8 @@ def create_c_array(c_type: Any, elements: Iterable[Any], length: int = None) -> 
 
 
 class AIOContext:
+    __slots__ = ('_ctx', '_max_jobs')
+
     _ctx: aio_context_t
     _max_jobs: int
 

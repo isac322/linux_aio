@@ -8,6 +8,8 @@ from .raw import IOEvent
 
 
 class AIOEvent:
+    __slots__ = ('_event',)
+
     _event: IOEvent
 
     def __init__(self, event: IOEvent) -> None:

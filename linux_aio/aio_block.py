@@ -11,6 +11,8 @@ BUF_TYPE = Union[bytearray, bytes, None]
 
 
 class AIOBlock:
+    __slots__ = ('_iocb', '_buffer', '_py_obj')
+
     _iocb: IOCB
     _buffer: Optional[BUF_TYPE]
     _py_obj: py_object  # to avoid garbage collection
@@ -59,6 +61,7 @@ class AIOBlock:
     def cmd(self) -> IOCBCMD:
         return IOCBCMD(self._iocb.aio_lio_opcode)
 
+    # noinspection PyAttributeOutsideInit
     @cmd.setter
     def cmd(self, new_cmd: IOCBCMD) -> None:
         if new_cmd in (IOCBCMD.FDSYNC, IOCBCMD.FSYNC, IOCBCMD.NOOP, IOCBCMD.POLL):
