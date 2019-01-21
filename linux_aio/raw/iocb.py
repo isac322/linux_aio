@@ -1,7 +1,9 @@
 # coding: UTF-8
 
 import sys
-from ctypes import Structure, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, sizeof
+from ctypes import (
+    Structure, c_int16, c_int64, c_size_t, c_uint, c_uint16, c_uint32, c_uint64, c_ulong, c_void_p, sizeof
+)
 from enum import IntEnum
 
 _PADDED = {
@@ -39,6 +41,13 @@ class IOCB(Structure):
             ('aio_resfd', c_uint32),
 
         )
+
+
+class IOVec(Structure):
+    _fields_ = (
+        ('iov_base', c_void_p),
+        ('iov_len', c_size_t)
+    )
 
 
 class IOCBCMD(IntEnum):

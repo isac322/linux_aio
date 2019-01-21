@@ -1,11 +1,12 @@
 # coding: UTF-8
 
-from ctypes import Structure, _SimpleCData, c_int16, c_int64, c_uint, c_uint16, c_uint32, c_uint64
+from ctypes import Structure, c_int16, c_int64, c_size_t, c_uint, c_uint16, c_uint32, c_uint64, c_void_p
 from enum import IntEnum, IntFlag
 from typing import Tuple, Type, Union, overload
 
-__all__ = ('IOCB', 'IOCBCMD', 'IOCBFlag', 'IOCBPriorityClass', 'IOCBRWFlag', 'gen_io_priority', 'IOPRIO_CLASS_SHIFT')
-
+__all__ = (
+    'IOCB', 'IOCBCMD', 'IOCBFlag', 'IOCBPriorityClass', 'IOCBRWFlag', 'gen_io_priority', 'IOPRIO_CLASS_SHIFT', 'IOVec'
+)
 _ot = _SimpleCData
 
 
@@ -65,6 +66,14 @@ class IOCB(Structure):
                  aio_reserved2: Union[c_uint64, int] = 0,
                  aio_flags: Union[c_uint32, int] = 0,
                  aio_resfd: Union[c_uint32, int] = 0) -> None: ...
+
+
+class IOVec(Structure):
+    iov_base: Union[c_void_p, int] = ...
+    iov_len: Union[c_size_t, int] = ...
+
+    # noinspection PyMissingConstructor
+    def __init__(self, iov_base: Union[c_void_p, int] = 0, iov_len: Union[c_size_t, int] = 0) -> None: ...
 
 
 # Define the types we need.
