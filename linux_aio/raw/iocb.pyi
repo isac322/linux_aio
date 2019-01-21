@@ -7,25 +7,24 @@ from typing import Tuple, Type, Union, overload
 __all__ = (
     'IOCB', 'IOCBCMD', 'IOCBFlag', 'IOCBPriorityClass', 'IOCBRWFlag', 'gen_io_priority', 'IOPRIO_CLASS_SHIFT', 'IOVec'
 )
-_ot = _SimpleCData
 
 
 # noinspection PyPep8Naming
 # Little endian (32-bit)
 @overload
-def _PADDED(o: Type[_ot], k1: str, k2: str) -> Tuple[Tuple[str, Type[_ot]], Tuple[str, Type[_ot]]]: ...
+def _PADDED(o: Type, k1: str, k2: str) -> Tuple[Tuple[str, Type], Tuple[str, Type]]: ...
 
 
 # noinspection PyPep8Naming
 # Little endian (64-bit)
 @overload
-def _PADDED(o: Type[_ot], k1: str, k2: str) -> Tuple[Tuple[str, Type[_ot]], Tuple[str, Type[c_uint]]]: ...
+def _PADDED(o: Type, k1: str, k2: str) -> Tuple[Tuple[str, Type], Tuple[str, Type[c_uint]]]: ...
 
 
 # noinspection PyPep8Naming
 # Big endian (64-bit, 32-bit)
 @overload
-def _PADDED(o: Type[_ot], k1: str, k2: str) -> Tuple[Tuple[str, Type[c_uint]], Tuple[str, Type[_ot]]]: ...
+def _PADDED(o: Type, k1: str, k2: str) -> Tuple[Tuple[str, Type[c_uint]], Tuple[str, Type]]: ...
 
 
 class IOCB(Structure):
