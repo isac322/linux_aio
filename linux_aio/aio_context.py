@@ -2,18 +2,13 @@
 
 from ctypes import c_long, c_uint, pointer
 from types import TracebackType
-from typing import Any, Iterable, Optional, Tuple, Type
+from typing import Optional, Tuple, Type
 
 from .aio_block import AIOBlock
 from .aio_event import AIOEvent
-from .raw import IOEvent, Timespec, aio_context_t, io_cancel, io_destroy, io_getevents, io_setup, io_submit, iocb_p
-
-
-def create_c_array(c_type: Any, elements: Iterable[Any], length: int = None) -> Any:
-    elements_tup = tuple(elements)
-    if length is None:
-        length = len(elements_tup)
-    return (c_type * length)(*elements_tup)
+from .raw import (
+    IOEvent, Timespec, aio_context_t, create_c_array, io_cancel, io_destroy, io_getevents, io_setup, io_submit, iocb_p
+)
 
 
 class AIOContext:
