@@ -1,4 +1,4 @@
-[\[english\]](README.md) | **\[한국어 (korean)\]**
+[\[english\]](https://github.com/isac322/linux_aio/blob/master/README.md) | **\[한국어 (korean)\]**
 
 # linux_aio: Python wrapper for [Linux Kernel AIO](http://lse.sourceforge.net/io/aio.html)
 
