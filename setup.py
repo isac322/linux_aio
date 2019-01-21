@@ -15,7 +15,7 @@ setup(
         long_description=readme,
         long_description_content_type='text/markdown',
         url='https://github.com/isac322/linux_aio',
-        packages=find_packages(),
+        packages=find_packages(exclude=('test',)),
         classifiers=[
             'Development Status :: 3 - Alpha',
             'Intended Audience :: Developers',
