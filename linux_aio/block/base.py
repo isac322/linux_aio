@@ -7,7 +7,7 @@ from ..raw import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOCBRWFlag, IOPRIO
 
 
 class AIOBlock(metaclass=ABCMeta):
-    __slots__ = ('_iocb', '_py_obj', '_file_obj')
+    __slots__ = ('_iocb', '_py_obj', '_file_obj', '_deleted')
 
     def __init__(self, file, cmd: IOCBCMD, rw_flags: IOCBRWFlag, priority_class: IOCBPriorityClass,
                  priority_value: int, buffer: int, length: int, offset: int, res_fd: int) -> None:
@@ -27,6 +27,7 @@ class AIOBlock(metaclass=ABCMeta):
         if res_fd is not 0:
             flags |= IOCBFlag.RESFD
 
+        self._deleted = False
         # to avoid garbage collection
         self._py_obj = py_object(self)  # type: py_object
         self._iocb = IOCB(  # type: IOCB
@@ -95,6 +96,9 @@ class AIOBlock(metaclass=ABCMeta):
         block._iocb.aio_lio_opcode = new_cmd
         block._iocb.aio_data = addressof(block._py_obj)
         block._file_obj = self._file_obj
+        block._deleted = False
+
+        self._deleted = True
 
         return block
 
