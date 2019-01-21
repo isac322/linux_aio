@@ -47,7 +47,7 @@ class IOCBCMD(IntEnum):
     # These two are experimental.
     # PREADX = 4
     POLL = 5
-    NOOP = 6
+    # NOOP = 6
     PREADV = 7
     PWRITEV = 8
 
