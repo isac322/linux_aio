@@ -38,16 +38,24 @@ class AIOContext:
             io_destroy(self._ctx)
             self._ctx = aio_context_t()
 
+    # noinspection PyProtectedMember
     def cancel(self, block: AIOBlock) -> AIOEvent:
+        if block._deleted:
+            raise ValueError(f'{block} can not be used because it has already been transformed into another AIOBlock.')
+
         result = IOEvent()
 
-        # noinspection PyProtectedMember
         io_cancel(self._ctx, pointer(block._iocb), pointer(result))
 
         return AIOEvent(result)
 
+    # noinspection PyProtectedMember
     def submit(self, *blocks: AIOBlock) -> int:
-        # noinspection PyProtectedMember
+        for block in blocks:
+            if block._deleted:
+                raise ValueError(
+                        f'{block} can not be used because it has already been transformed into another AIOBlock.')
+
         return io_submit(
                 self._ctx,
                 c_long(len(blocks)),
