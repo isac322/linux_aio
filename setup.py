@@ -8,7 +8,7 @@ with open('README.md') as fp:
 
 setup(
         name='linux_aio',
-        version='0.2.2',
+        version='0.3.0',
         author='Byeonghoon Yoo',
         author_email='bh322yoo@gmail.com',
         description='Linux aio ABI wrapper',
@@ -17,7 +17,7 @@ setup(
         url='https://github.com/isac322/linux_aio',
         packages=find_packages(exclude=('test',)),
         classifiers=[
-            'Development Status :: 3 - Alpha',
+            'Development Status :: 4 - Beta',
             'Intended Audience :: Developers',
             'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
             'Natural Language :: English',
@@ -28,6 +28,11 @@ setup(
             'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
+            'Programming Language :: Python :: 3 :: Only',
+            'Programming Language :: Python :: Implementation',
+            'Programming Language :: Python :: Implementation :: CPython',
+            'Programming Language :: Python :: Implementation :: PyPy',
+            'Programming Language :: Python :: Implementation :: Stackless',
             'Topic :: Software Development',
             'Topic :: Software Development :: Libraries',
             'Topic :: Software Development :: Libraries :: Python Modules',
