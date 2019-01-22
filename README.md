@@ -29,7 +29,7 @@ In summary, it allows non-blocking and asynchronous use of blocking IO operation
 
 ### **It is different from [POSIX AIO](http://man7.org/linux/man-pages/man7/aio.7.html)**
 
-The POSIX AIO APIs have the `aio_` prefix, but the Linux Kernel AIO has the` io_` prefix.
+The POSIX AIO APIs have the `aio_` prefix, but the Linux Kernel AIO has the `io_` prefix.
 
 There is already a POSIX AIO API for asynchronous I/O, but Linux implements it in glibc, a user-space library, which is supposed to use multi-threading internally.
 So, as you can see from the experiment below, it's much worse than using the blocking IO API.
