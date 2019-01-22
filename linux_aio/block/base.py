@@ -7,6 +7,10 @@ from ..raw import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOCBRWFlag, IOPRIO
 
 
 class AIOBlock(metaclass=ABCMeta):
+    """
+    .. versionadded:: 0.2.0
+    .. versionchanged:: 0.3.0
+    """
     __slots__ = ('_iocb', '_py_obj', '_file_obj', '_deleted')
 
     def __init__(self, file, cmd: IOCBCMD, rw_flags: IOCBRWFlag, priority_class: IOCBPriorityClass,

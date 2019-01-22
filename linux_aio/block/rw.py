@@ -8,6 +8,9 @@ from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
 
 
 class RWBlock(AIOBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
     __slots__ = ('_buffer',)
 
     def __init__(self,

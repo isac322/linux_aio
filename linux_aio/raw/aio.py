@@ -15,6 +15,9 @@ _syscall = _libc.syscall
 
 
 class Timespec(Structure):
+    """
+    .. versionadded:: 0.1.0
+    """
     _fields_ = (
         ('tv_sec', c_long),
         ('tv_nsec', c_long),
@@ -22,6 +25,9 @@ class Timespec(Structure):
 
 
 class IOEvent(Structure):
+    """
+    .. versionadded:: 0.1.0
+    """
     _fields_ = (
         ('data', c_uint64),
         ('obj', c_uint64),
@@ -39,6 +45,9 @@ timespec_p = POINTER(Timespec)
 
 
 def io_setup(max_jobs: c_uint, context_p: aio_context_t_p) -> None:
+    """
+    .. versionadded:: 0.1.0
+    """
     ret = _syscall(lib.SYS_io_setup, max_jobs, context_p)
 
     if ret is not 0:
@@ -46,6 +55,9 @@ def io_setup(max_jobs: c_uint, context_p: aio_context_t_p) -> None:
 
 
 def io_destroy(context: aio_context_t) -> None:
+    """
+    .. versionadded:: 0.1.0
+    """
     ret = _syscall(lib.SYS_io_destroy, context)
 
     if ret is not 0:
@@ -53,6 +65,9 @@ def io_destroy(context: aio_context_t) -> None:
 
 
 def io_submit(context: aio_context_t, num_jobs: c_long, iocb_p_list: iocb_pp) -> int:
+    """
+    .. versionadded:: 0.1.0
+    """
     ret = _syscall(lib.SYS_io_submit, context, num_jobs, iocb_p_list)
 
     if ret < 0:
@@ -65,7 +80,9 @@ def io_getevents(context: aio_context_t, min_jobs: c_long, max_jobs: c_long,
                  events: io_event_p, timeout: timespec_p) -> int:
     """
     return value can be less than min_jobs. because io_getevents can be interrupted by signal during processing
-    (io_pgetevents does not, but not fully implemented)
+    (io_pgetevents does not, but not fully implemented yet)
+
+    .. versionadded:: 0.1.0
     """
     ret = _syscall(lib.SYS_io_getevents, context, min_jobs, max_jobs, events, timeout)
 
@@ -76,6 +93,9 @@ def io_getevents(context: aio_context_t, min_jobs: c_long, max_jobs: c_long,
 
 
 def io_cancel(context: aio_context_t, iocb: iocb_p, result: io_event_p) -> None:
+    """
+    .. versionadded:: 0.1.0
+    """
     ret = _syscall(lib.SYS_io_cancel, context, iocb, result)
 
     if ret is not 0:

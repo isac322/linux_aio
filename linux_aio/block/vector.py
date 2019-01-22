@@ -7,6 +7,9 @@ from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
 
 
 class VectorBlock(RWBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
     __slots__ = ('_io_vectors',)
 
     def __init__(self,
@@ -44,6 +47,10 @@ class VectorBlock(RWBlock):
 
 
 class ReadVBlock(VectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  buffer_list,
@@ -56,6 +63,10 @@ class ReadVBlock(VectorBlock):
 
 
 class WriteVBlock(VectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  content_list,

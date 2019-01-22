@@ -7,6 +7,10 @@ from ..raw import IOCBCMD, IOCBPriorityClass
 
 
 class NonRWBlock(AIOBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  cmd: IOCBCMD,
@@ -18,6 +22,13 @@ class NonRWBlock(AIOBlock):
 
 
 class PollBlock(NonRWBlock):
+    """
+    .. warning::
+        Works only on Linux 4.19 or later.
+        Otherwise, submission of this block will raise OSError (with error code 22 EINVAL)
+
+    .. versionadded:: 0.3.0
+    """
     __slots__ = ('_event_masks',)
 
     def __init__(self,
@@ -43,6 +54,14 @@ class PollBlock(NonRWBlock):
 
 
 class FsyncBlock(NonRWBlock):
+    """
+    .. warning::
+        Works only on Linux 4.18 or later
+        Otherwise, submission of this block will raise OSError (with error code 22 EINVAL)
+
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  priority_class: IOCBPriorityClass = IOCBPriorityClass.NONE,
@@ -52,6 +71,14 @@ class FsyncBlock(NonRWBlock):
 
 
 class FDsyncBlock(NonRWBlock):
+    """
+    .. warning::
+        Works only on Linux 4.18 or later
+        Otherwise, submission of this block will raise OSError (with error code 22 EINVAL)
+
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  priority_class: IOCBPriorityClass = IOCBPriorityClass.NONE,

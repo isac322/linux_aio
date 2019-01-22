@@ -5,6 +5,10 @@ from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
 
 
 class NonVectorBlock(RWBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  cmd: IOCBCMD,
@@ -39,6 +43,10 @@ class NonVectorBlock(RWBlock):
 
 
 class ReadBlock(NonVectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  buffer: bytes or bytearray or str,
@@ -60,6 +68,10 @@ class ReadBlock(NonVectorBlock):
 
 
 class WriteBlock(NonVectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file,
                  content: bytes or bytearray or str,
