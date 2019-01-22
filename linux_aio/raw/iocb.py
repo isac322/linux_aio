@@ -15,6 +15,9 @@ _PADDED = {
 
 
 class IOCB(Structure):
+    """
+    .. versionadded:: 0.1.0
+    """
     _fields_ = (
         # internal fields used by the kernel
         ('aio_data', c_uint64),
@@ -41,6 +44,9 @@ class IOCB(Structure):
 
 
 class IOVec(Structure):
+    """
+    .. versionadded:: 0.3.0
+    """
     _fields_ = (
         ('iov_base', c_void_p),
         ('iov_len', c_size_t)
@@ -48,13 +54,19 @@ class IOVec(Structure):
 
 
 class IOCBCMD(IntEnum):
+    """
+    .. versionadded:: 0.1.0
+    """
     PREAD = 0
     PWRITE = 1
     FSYNC = 2
+    """requires Linux 4.18 or above"""
     FDSYNC = 3
+    """requires Linux 4.18 or above"""
     # These two are experimental.
     # PREADX = 4
     POLL = 5
+    """requires Linux 4.19 or above"""
     # NOOP = 6
     PREADV = 7
     PWRITEV = 8
@@ -65,7 +77,11 @@ class IOCBCMD(IntEnum):
 
 
 class IOCBFlag(IntEnum):
-    """ flags for :attr:`IOCB.aio_flags` """
+    """
+    flags for :attr:`IOCB.aio_flags`
+
+    .. versionadded:: 0.1.0
+    """
     RESFD = 1 << 0
     IOPRIO = 1 << 1
 
@@ -76,7 +92,11 @@ class IOCBFlag(IntEnum):
 
 # TODO: detail description (e.g. minimum required linux version)
 class IOCBRWFlag(IntEnum):
-    """ flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h) """
+    """
+    flags for :attr:`IOCB.aio_rw_flags`. from linux code (/include/uapi/linux/fs.h)
+
+    .. versionadded:: 0.1.0
+    """
     HIPRI = 1 << 0
     DSYNC = 1 << 1
     SYNC = 1 << 2
@@ -90,7 +110,11 @@ class IOCBRWFlag(IntEnum):
 
 # TODO: detail description (e.g. minimum required linux version, how priority value works)
 class IOCBPriorityClass(IntEnum):
-    """ priority class. from linux code (/include/linux/ioprio.h) """
+    """
+    priority class. from linux code (/include/linux/ioprio.h)
+
+    .. versionadded:: 0.1.0
+    """
     NONE = 0
     RT = 1
     BE = 2
@@ -105,4 +129,7 @@ IOPRIO_CLASS_SHIFT = 13
 
 
 def gen_io_priority(priority_class: IOCBPriorityClass, priority: int) -> int:
+    """
+    .. versionadded:: 0.1.0
+    """
     return (priority_class << IOPRIO_CLASS_SHIFT) | priority

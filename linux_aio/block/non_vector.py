@@ -7,6 +7,10 @@ from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
 
 
 class NonVectorBlock(RWBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     BUF_TYPE = Union[bytearray, bytes]
 
     def __init__(self,
@@ -43,6 +47,10 @@ class NonVectorBlock(RWBlock):
 
 
 class ReadBlock(NonVectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file: Any,
                  buffer: Union[str, NonVectorBlock.BUF_TYPE],
@@ -64,6 +72,10 @@ class ReadBlock(NonVectorBlock):
 
 
 class WriteBlock(NonVectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file: Any,
                  content: Union[str, NonVectorBlock.BUF_TYPE],

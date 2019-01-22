@@ -8,6 +8,9 @@ from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
 
 
 class VectorBlock(RWBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
     __slots__ = ('_io_vectors',)
 
     BUF_TYPE = Tuple[Union[bytearray, bytes], ...]
@@ -47,6 +50,10 @@ class VectorBlock(RWBlock):
 
 
 class ReadVBlock(VectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file: Any,
                  buffer_list: Iterable[_NAT_BUF_TYPE],
@@ -59,6 +66,10 @@ class ReadVBlock(VectorBlock):
 
 
 class WriteVBlock(VectorBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
+
     def __init__(self,
                  file: Any,
                  content_list: Iterable[_NAT_BUF_TYPE],

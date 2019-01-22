@@ -12,6 +12,9 @@ from .raw import (
 
 
 class AIOContext:
+    """
+    .. versionadded:: 0.2.0
+    """
     __slots__ = ('_ctx', '_max_jobs')
 
     def __init__(self, max_jobs: int) -> None:

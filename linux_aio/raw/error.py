@@ -76,6 +76,9 @@ submit_err_map = {  # type: Dict[int, str]
 
 
 def handle_error(error_map: Mapping[int, str], *args) -> None:
+    """
+    .. versionadded:: 0.1.0
+    """
     err = get_errno()  # type: int
 
     def_msg = '{}, {}.'.format(errorcode[err], strerror(err))
