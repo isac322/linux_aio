@@ -1,10 +1,15 @@
 # coding: UTF-8
 
+import errno
+import platform
 import select
 import socket
 import unittest
+from typing import Tuple
 
 from linux_aio import AIOContext, FDsyncBlock, FsyncBlock, PollBlock
+
+_linux_ver: Tuple[int, int, int] = tuple(map(int, platform.uname().release.split('-')[0].split('.')))
 
 
 class TestNonRW(unittest.TestCase):
@@ -17,15 +22,21 @@ class TestNonRW(unittest.TestCase):
 
             block = PollBlock(sock, select.EPOLLIN)
 
-            submit_ret = ctx.submit(block)
-            self.assertEqual(1, submit_ret)
+            try:
+                submit_ret = ctx.submit(block)
+                self.assertEqual(1, submit_ret)
 
-            events_ret = ctx.get_events(1, 1)
-            self.assertEqual(1, len(events_ret))
-            self.assertIsNone(events_ret[0].buffer)
-            self.assertIsNone(events_ret[0].stripped_buffer())
-            # TODO
-            # self.assertTupleEqual(tuple(), events_ret)
+                events_ret = ctx.get_events(1, 1)
+                self.assertEqual(1, len(events_ret))
+                self.assertIsNone(events_ret[0].buffer)
+                self.assertIsNone(events_ret[0].stripped_buffer())
+                # TODO
+                # self.assertTupleEqual(tuple(), events_ret)
+            except OSError as err:
+                if _linux_ver >= (4, 19):
+                    raise
+                else:
+                    self.assertEqual(errno.EINVAL, err.errno)
 
         self.assertTrue(ctx.closed)
 
@@ -40,15 +51,21 @@ class TestNonRW(unittest.TestCase):
             block.event_masks |= select.EPOLLOUT
             self.assertEqual(select.EPOLLOUT | select.EPOLLIN, block.event_masks)
 
-            submit_ret = ctx.submit(block)
-            self.assertEqual(1, submit_ret)
+            try:
+                submit_ret = ctx.submit(block)
+                self.assertEqual(1, submit_ret)
 
-            events_ret = ctx.get_events(1, 1)
-            self.assertEqual(1, len(events_ret))
-            self.assertIsNone(events_ret[0].buffer)
-            self.assertIsNone(events_ret[0].stripped_buffer())
-            # TODO
-            # self.assertTupleEqual(tuple(), events_ret)
+                events_ret = ctx.get_events(1, 1)
+                self.assertEqual(1, len(events_ret))
+                self.assertIsNone(events_ret[0].buffer)
+                self.assertIsNone(events_ret[0].stripped_buffer())
+                # TODO
+                # self.assertTupleEqual(tuple(), events_ret)
+            except OSError as err:
+                if _linux_ver >= (4, 18):
+                    raise
+                else:
+                    self.assertEqual(errno.EINVAL, err.errno)
 
         self.assertTrue(ctx.closed)
 
@@ -58,15 +75,21 @@ class TestNonRW(unittest.TestCase):
 
             block = FsyncBlock(fp)
 
-            submit_ret = ctx.submit(block)
-            self.assertEqual(1, submit_ret)
+            try:
+                submit_ret = ctx.submit(block)
+                self.assertEqual(1, submit_ret)
 
-            events_ret = ctx.get_events(1, 1)
-            self.assertEqual(1, len(events_ret))
-            self.assertIsNone(events_ret[0].buffer)
-            self.assertIsNone(events_ret[0].stripped_buffer())
-            self.assertEqual(0, events_ret[0].response)
-            self.assertEqual(0, events_ret[0].response2)
+                events_ret = ctx.get_events(1, 1)
+                self.assertEqual(1, len(events_ret))
+                self.assertIsNone(events_ret[0].buffer)
+                self.assertIsNone(events_ret[0].stripped_buffer())
+                self.assertEqual(0, events_ret[0].response)
+                self.assertEqual(0, events_ret[0].response2)
+            except OSError as err:
+                if _linux_ver >= (4, 18):
+                    raise
+                else:
+                    self.assertEqual(errno.EINVAL, err.errno)
 
     def test_fdsync(self):
         with AIOContext(2) as ctx, open('test.txt', 'w') as fp:
@@ -74,15 +97,21 @@ class TestNonRW(unittest.TestCase):
 
             block = FDsyncBlock(fp)
 
-            submit_ret = ctx.submit(block)
-            self.assertEqual(1, submit_ret)
+            try:
+                submit_ret = ctx.submit(block)
+                self.assertEqual(1, submit_ret)
 
-            events_ret = ctx.get_events(1, 1)
-            self.assertEqual(1, len(events_ret))
-            self.assertIsNone(events_ret[0].buffer)
-            self.assertIsNone(events_ret[0].stripped_buffer())
-            self.assertEqual(0, events_ret[0].response)
-            self.assertEqual(0, events_ret[0].response2)
+                events_ret = ctx.get_events(1, 1)
+                self.assertEqual(1, len(events_ret))
+                self.assertIsNone(events_ret[0].buffer)
+                self.assertIsNone(events_ret[0].stripped_buffer())
+                self.assertEqual(0, events_ret[0].response)
+                self.assertEqual(0, events_ret[0].response2)
+            except OSError as err:
+                if _linux_ver >= (4, 18):
+                    raise
+                else:
+                    self.assertEqual(errno.EINVAL, err.errno)
 
 
 if __name__ == '__main__':
