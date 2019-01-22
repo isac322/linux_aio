@@ -8,6 +8,9 @@ from .raw import IOEvent
 
 
 class AIOEvent:
+    """
+    .. versionadded:: 0.2.0
+    """
     __slots__ = ('_event', '_aio_block')
 
     _event: IOEvent

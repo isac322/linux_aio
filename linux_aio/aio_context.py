@@ -14,6 +14,9 @@ from .raw import (
 
 
 class AIOContext:
+    """
+    .. versionadded:: 0.2.0
+    """
     __slots__ = ('_ctx', '_max_jobs')
 
     _ctx: aio_context_t

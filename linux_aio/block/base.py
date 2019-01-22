@@ -17,6 +17,10 @@ if TYPE_CHECKING:
 
 
 class AIOBlock(metaclass=ABCMeta):
+    """
+    .. versionadded:: 0.2.0
+    .. versionchanged:: 0.3.0
+    """
     __slots__ = ('_iocb', '_py_obj', '_file_obj', '_deleted')
 
     _iocb: IOCB

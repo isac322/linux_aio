@@ -13,6 +13,9 @@ _NAT_BUF_TYPE = TypeVar('_NAT_BUF_TYPE', bytearray, bytes)
 
 
 class RWBlock(AIOBlock):
+    """
+    .. versionadded:: 0.3.0
+    """
     __slots__ = ('_buffer',)
 
     BUF_TYPE: ClassVar[Type[Union[_NAT_BUF_TYPE, Tuple[_NAT_BUF_TYPE, ...]]]]
