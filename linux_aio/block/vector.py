@@ -3,8 +3,9 @@
 from ctypes import addressof
 from typing import Any, Iterable, Tuple, Union
 
+from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
+
 from .rw import RWBlock, _NAT_BUF_TYPE
-from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
 
 
 class VectorBlock(RWBlock):

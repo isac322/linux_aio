@@ -10,8 +10,9 @@
 [![](https://img.shields.io/pypi/wheel/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
 [![](https://img.shields.io/pypi/l/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
 
-[Linux Kernel AIO](http://lse.sourceforge.net/io/aio.html)를 직접 사용하는 Python wrapper 모듈
+[Linux Kernel AIO](http://lse.sourceforge.net/io/aio.html)를 직접 사용하는 Python High-level wrapper 모듈.
 
+See [linux_aio_bind](https://pypi.org/project/linux-aio-bind) if you want to handle the API directly at low-level.
 
 ## Linux Kernel AIO이란?
 
@@ -38,27 +39,16 @@ POSIX AIO의 API들은 `aio_` 접두사를 가지지만, Linux Kernel AIO는 `io
 
 ## 구현 및 구조
 
-### `linux_aio.raw` 패키지
-
-- [Python의 ctypes 모듈](https://docs.python.org/ko/3/library/ctypes.html) 사용
-- Linux AIO의 C header와 1:1 대응되는 정의 모음
-	- C를 사용했을 때의 기능을 100% 옮김
-	- [Linux man pages (4.16)](http://man7.org/linux/man-pages/man2/io_submit.2.html)기준으로 man page에 보이는 모든 기능과, [4.20.3 소스 코드](https://elixir.bootlin.com/linux/v4.20.3/source/include/uapi/linux/aio_abi.h#L71)에서 추가된 기능들을 발견할 수 있는 한 모두 옮김
-- [ctypes 모듈](https://docs.python.org/ko/3/library/ctypes.html)을 사용하여 포인터 단위로 연산할줄 안다면, 이 패키지를 기반으로하여 다른 형태의 wrapper도 제작 가능
-- ABI 호출은 `syscall`을 사용하며, [아키텍쳐별로 다른 syscall number](https://fedora.juszkiewicz.com.pl/syscalls.html)를 모듈 설치시에 얻기위해 [cffi](https://pypi.org/project/cffi/)를 사용
-	- [소스 코드 참조](linux_aio/raw/syscall.py)
-- [python stub](https://github.com/python/mypy/wiki/Creating-Stubs-For-Python-Modules) (`pyi` 파일 - for type hint) 포함
-
 ### `linux_aio` 패키지
 
-- `linux_aio.raw` 패키지를 기반으로 구현
-- `linux_aio.raw`와 달리 `ctypes`에대한 지식 없이도 사용 가능
-- [test codes](test)의 코드들에서 예제 확인 가능
+- Linux kernel AIO의 Low-level binding인 [linux_aio_bind](https://pypi.org/project/linux-aio-bind) 패키지를 기반으로 구현
+- [linux_aio_bind](https://pypi.org/project/linux-aio-bind)와 달리 `ctypes`에대한 지식 없이도 사용 가능
+- [test codes](https://github.com/isac322/linux_aio/tree/master/test)의 코드들에서 예제 확인 가능
 
 
 ## 예제
 
-[test](test)의 코드들에서 예제 확인 가능
+[test](https://github.com/isac322/linux_aio/tree/master/test)의 코드들에서 예제 확인 가능
 
 
 ## Notes & Limits

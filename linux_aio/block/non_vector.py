@@ -2,8 +2,9 @@
 
 from typing import Any, Union
 
+from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
+
 from .rw import RWBlock
-from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
 
 
 class NonVectorBlock(RWBlock):

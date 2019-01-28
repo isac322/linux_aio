@@ -3,8 +3,9 @@
 from ctypes import py_object
 from typing import Tuple, Union
 
+from linux_aio_bind import IOEvent
+
 from .block import AIOBlock, NonVectorBlock, ReadBlock, ReadVBlock, VectorBlock, WriteBlock, WriteVBlock
-from .raw import IOEvent
 
 
 class AIOEvent:

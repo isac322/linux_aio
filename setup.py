@@ -47,11 +47,8 @@ setup(
         python_requires='>=3.4',
         provides=['linux_aio'],
         platforms='Linux',
-        setup_requires=['cffi>=1.0.0'],
-        install_requires=['cffi>=1.0.0'],
-        cffi_modules=['linux_aio/raw/syscall.py:_ffibuilder'],
+        install_requires=['linux_aio_bind'],
         package_data={
             'linux_aio': ['py.typed'],
-            'linux_aio.raw': ['*.pyi'],
         }
 )

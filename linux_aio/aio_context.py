@@ -6,11 +6,12 @@ from ctypes import c_long, c_uint, pointer
 from types import TracebackType
 from typing import Optional, Tuple, Type
 
-from .aio_event import AIOEvent
-from .block import AIOBlock
-from .raw import (
+from linux_aio_bind import (
     IOEvent, Timespec, aio_context_t, create_c_array, io_cancel, io_destroy, io_getevents, io_setup, io_submit, iocb_p
 )
+
+from .aio_event import AIOEvent
+from .block import AIOBlock
 
 
 class AIOContext:

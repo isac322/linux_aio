@@ -6,8 +6,9 @@ from abc import abstractmethod
 from ctypes import c_char, c_char_p, c_void_p, cast
 from typing import Any, ClassVar, Tuple, Type, TypeVar, Union
 
+from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
+
 from .base import AIOBlock
-from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
 
 _NAT_BUF_TYPE = TypeVar('_NAT_BUF_TYPE', bytearray, bytes)
 

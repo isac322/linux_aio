@@ -6,14 +6,14 @@ from abc import ABCMeta
 from ctypes import addressof, py_object
 from typing import TYPE_CHECKING, overload
 
-from ..raw import IOCB, IOCBCMD, IOCBFlag, IOPRIO_CLASS_SHIFT, gen_io_priority
+from linux_aio_bind import IOCB, IOCBCMD, IOCBFlag, IOPRIO_CLASS_SHIFT, gen_io_priority
 
 if TYPE_CHECKING:
     from typing import Any, Optional
+    from linux_aio_bind import IOCBPriorityClass, IOCBRWFlag
     from .non_rw import FDsyncBlock, FsyncBlock, PollBlock
     from .non_vector import ReadBlock, WriteBlock
     from .vector import ReadVBlock, WriteVBlock
-    from ..raw import IOCBPriorityClass, IOCBRWFlag
 
 
 class AIOBlock(metaclass=ABCMeta):

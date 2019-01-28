@@ -3,8 +3,9 @@
 import select
 from typing import Any
 
+from linux_aio_bind import IOCBCMD, IOCBPriorityClass
+
 from .base import AIOBlock
-from ..raw import IOCBCMD, IOCBPriorityClass
 
 
 class NonRWBlock(AIOBlock):
