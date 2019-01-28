@@ -1,10 +1,11 @@
 # coding: UTF-8
 
-from abc import abstractmethod
 from ctypes import c_char, c_char_p, c_void_p, cast
 
+from abc import abstractmethod
+from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
+
 from .base import AIOBlock
-from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
 
 
 class RWBlock(AIOBlock):

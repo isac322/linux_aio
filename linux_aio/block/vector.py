@@ -2,8 +2,9 @@
 
 from ctypes import addressof
 
+from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
+
 from .rw import RWBlock
-from ..raw import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
 
 
 class VectorBlock(RWBlock):

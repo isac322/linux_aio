@@ -2,8 +2,9 @@
 
 from ctypes import py_object
 
+from linux_aio_bind import IOEvent
+
 from .block import AIOBlock, ReadBlock, ReadVBlock, WriteBlock, WriteVBlock
-from .raw import IOEvent
 
 
 class AIOEvent:

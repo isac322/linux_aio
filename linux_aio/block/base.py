@@ -1,9 +1,9 @@
 # coding: UTF-8
 
-from abc import ABCMeta
 from ctypes import addressof, py_object
 
-from ..raw import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOCBRWFlag, IOPRIO_CLASS_SHIFT, gen_io_priority
+from abc import ABCMeta
+from linux_aio_bind import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOCBRWFlag, IOPRIO_CLASS_SHIFT, gen_io_priority
 
 
 class AIOBlock(metaclass=ABCMeta):
