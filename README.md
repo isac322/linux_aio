@@ -37,27 +37,16 @@ So, as you can see from the experiment below, it's much worse than using the blo
 
 ## Implementation & Structure
 
-### Package `linux_aio.raw`
-
-- [ctypes module](https://docs.python.org/3/library/ctypes.html) is used.
-- It is defined to correspond `1:1` with the C header of Linux AIO.
-	- Implemented 100% of the functionality when using C.
-	- All the functions shown in the man page based on [Linux man pages (4.16)](http://man7.org/linux/man-pages/man2/io_submit.2.html), and all the functions added in [4.20.3 source code](https://elixir.bootlin.com/linux/v4.20.3/source/include/uapi/linux/aio_abi.h#L71), as far as I can find them. 
-- If you know how to use the [ctypes module](https://docs.python.org/3/library/ctypes.html) to operate on pointers, you can also build other types of wrappers based on this package.
-- It uses `syscall` for invoking ABI and [cffi](https://pypi.org/project/cffi/) for gathering [different syscall number by architecture](https://fedora.juszkiewicz.com.pl/syscalls.html) on module installation.
-	- [refer the code](linux_aio/raw/syscall.py)
-- [python stub](https://github.com/python/mypy/wiki/Creating-Stubs-For-Python-Modules) (`pyi` files - for type hint) are included.
-
 ### Package `linux_aio`
 
-- It based on package `linux_aio.raw`.
-- Unlike `linux_aio.raw`, it can be used without knowledge of `ctypes`
-- Examples can be found in the code in the [test directory](test).
+- Implemented based on [linux_aio_bind](https://pypi.org/project/linux-aio-bind) package which is low-level binding of Linux kernel AIO.
+- Unlike [linux_aio_bind](https://pypi.org/project/linux-aio-bind), it can be used without knowledge of `ctypes`
+- Examples can be found in the code in the [test directory](https://github.com/isac322/linux_aio/tree/master/test).
 
 
 ## Example
 
-Examples can be found in the code in the [test directory](test).
+Examples can be found in the code in the [test directory](https://github.com/isac322/linux_aio/tree/master/test).
 
 
 ## Notes & Limits
