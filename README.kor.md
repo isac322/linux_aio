@@ -9,6 +9,7 @@
 [![](https://img.shields.io/pypi/pyversions/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
 [![](https://img.shields.io/pypi/wheel/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
 [![](https://img.shields.io/pypi/l/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg?style=flat-square)](https://saythanks.io/to/isac322)
 
 [Linux Kernel AIO](http://lse.sourceforge.net/io/aio.html)를 직접 사용하는 Python High-level wrapper 모듈.
 
