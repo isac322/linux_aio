@@ -70,6 +70,7 @@ class WriteVBlock(VectorBlock):
 
     def __init__(self,
                  file,
+                 # TODO: add `str` type
                  content_list,
                  offset: int = 0,
                  rw_flags: IOCBRWFlag = 0,
