@@ -74,6 +74,7 @@ class WriteVBlock(VectorBlock):
 
     def __init__(self,
                  file: Any,
+                 # TODO: add `str` type
                  content_list: Iterable[_NAT_BUF_TYPE],
                  offset: int = 0,
                  rw_flags: IOCBRWFlag = 0,
