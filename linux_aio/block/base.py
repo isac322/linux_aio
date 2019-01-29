@@ -4,7 +4,7 @@ from ctypes import addressof, py_object
 
 from abc import ABCMeta
 from linux_aio_bind import IOCB, IOCBCMD, IOCBFlag, IOCBPriorityClass, IOCBRWFlag, IOPRIO_CLASS_SHIFT, gen_io_priority
-from typing import Any, Optional, overload
+from typing import Any, Optional, Union, overload
 
 
 class AIOBlock(metaclass=ABCMeta):
@@ -14,13 +14,15 @@ class AIOBlock(metaclass=ABCMeta):
     """
     __slots__ = ('_iocb', '_py_obj', '_file_obj', '_deleted')
 
-    def __init__(self, file: Any, cmd: IOCBCMD, rw_flags: IOCBRWFlag, priority_class: IOCBPriorityClass,
+    def __init__(self, file: Union[Any, int], cmd: IOCBCMD, rw_flags: IOCBRWFlag, priority_class: IOCBPriorityClass,
                  priority_value: int, buffer: int, length: int, offset: int, res_fd: int) -> None:
-        try:
-            fd = file.fileno()
-            self._file_obj = file
-        except AttributeError:
-            raise
+        if isinstance(file, int):
+            fd = file
+        else:
+            try:
+                fd = file.fileno()
+            except AttributeError:
+                raise AttributeError(f'`file` must be an int or an object with a fileno() method. current: {file}')
 
         priority = gen_io_priority(priority_class, priority_value)
 
@@ -32,7 +34,7 @@ class AIOBlock(metaclass=ABCMeta):
         if res_fd is not 0:
             flags |= IOCBFlag.RESFD
 
-        # to avoid garbage collection
+        self._file_obj = file
         self._deleted = False
         self._py_obj = py_object(self)  # type: py_object
         self._iocb = IOCB(  # type: IOCB
@@ -146,12 +148,15 @@ class AIOBlock(metaclass=ABCMeta):
         self._iocb.aio_offset = 0
 
     @property
-    def file(self) -> Any:
+    def file(self) -> Union[Any, int]:
         return self._file_obj
 
     @property
     def fileno(self) -> int:
-        return self._file_obj.fileno()
+        if isinstance(self._file_obj, int):
+            return self._file_obj
+        else:
+            return self._file_obj.fileno()
 
     @property
     def cmd(self) -> IOCBCMD:
