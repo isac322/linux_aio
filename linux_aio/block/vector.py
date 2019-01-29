@@ -1,9 +1,9 @@
 # coding: UTF-8
 
 from ctypes import addressof
-from typing import Any, Iterable, Tuple, Union
 
 from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag, IOVec, create_c_array
+from typing import Any, Iterable, Tuple, Union
 
 from .rw import RWBlock, _NAT_BUF_TYPE
 

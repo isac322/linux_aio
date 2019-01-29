@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 from ctypes import c_char, c_char_p, c_void_p, cast
-from typing import Any, ClassVar, Tuple, Type, TypeVar, Union
 
+from abc import abstractmethod
 from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
+from typing import Any, ClassVar, Tuple, Type, TypeVar, Union
 
 from .base import AIOBlock
 

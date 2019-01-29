@@ -1,8 +1,7 @@
 # coding: UTF-8
 
-from typing import Any, Union
-
 from linux_aio_bind import IOCBCMD, IOCBPriorityClass, IOCBRWFlag
+from typing import Any, Union
 
 from .rw import RWBlock
 

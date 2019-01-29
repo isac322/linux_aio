@@ -1,9 +1,9 @@
 # coding: UTF-8
 
 import select
-from typing import Any
 
 from linux_aio_bind import IOCBCMD, IOCBPriorityClass
+from typing import Any
 
 from .base import AIOBlock
 

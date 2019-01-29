@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from abc import ABCMeta
 from ctypes import addressof, py_object
-from typing import TYPE_CHECKING, overload, Union
 
+from abc import ABCMeta
 from linux_aio_bind import IOCB, IOCBCMD, IOCBFlag, IOPRIO_CLASS_SHIFT, gen_io_priority
+from typing import TYPE_CHECKING, Union, overload
 
 if TYPE_CHECKING:
     from typing import Any, Optional
