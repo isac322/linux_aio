@@ -15,14 +15,7 @@ class AIOBlock(metaclass=ABCMeta):
 
     def __init__(self, file, cmd: IOCBCMD, rw_flags: IOCBRWFlag, priority_class: IOCBPriorityClass,
                  priority_value: int, buffer: int, length: int, offset: int, res_fd: int) -> None:
-        if isinstance(file, int):
-            fd = file
-        else:
-            try:
-                fd = file.fileno()
-            except AttributeError:
-                raise AttributeError(f'`file` must be an int or an object with a fileno() method. current: {file}')
-
+        fd = self._get_fd(file)
         priority = gen_io_priority(priority_class, priority_value)
 
         flags = 0  # type: IOCBFlag
@@ -52,6 +45,19 @@ class AIOBlock(metaclass=ABCMeta):
 
     def __hash__(self) -> int:
         return addressof(self._iocb)
+
+    @classmethod
+    def _get_fd(cls, file) -> int:
+        if isinstance(file, int):
+            fd = file
+        else:
+            try:
+                fd = file.fileno()
+            except AttributeError:
+                raise AttributeError(
+                        '`file` must be an int or an object with a fileno() method. current: {}'.format(file))
+
+        return fd
 
     def change_cmd(self, new_cmd: IOCBCMD) -> 'AIOBlock':
         if new_cmd is self.cmd:
@@ -123,24 +129,18 @@ class AIOBlock(metaclass=ABCMeta):
     def file(self):
         return self._file_obj
 
+    @file.setter
+    def file(self, new_file) -> None:
+        self._iocb.aio_fildes = self._get_fd(new_file)
+        self._file_obj = new_file
+
     @property
     def fileno(self) -> int:
-        if isinstance(self._file_obj, int):
-            return self._file_obj
-        else:
-            return self._file_obj.fileno()
+        return self._iocb.aio_fildes
 
     @property
     def cmd(self) -> IOCBCMD:
         return IOCBCMD(self._iocb.aio_lio_opcode)
-
-    @property
-    def fd(self) -> int:
-        return self._iocb.aio_fildes
-
-    @fd.setter
-    def fd(self, new_fd: int) -> None:
-        self._iocb.aio_fildes = new_fd
 
     @property
     def flag(self) -> int:
