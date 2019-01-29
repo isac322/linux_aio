@@ -36,6 +36,7 @@ class NonVectorBlock(RWBlock):
     def buffer(self, buffer: BUF_TYPE) -> None:
         self._buffer = buffer
         self._iocb.aio_buf = self._inner_buf_addr(buffer)
+        self._iocb.aio_nbytes = len(buffer)
 
     @property
     def length(self) -> int:
