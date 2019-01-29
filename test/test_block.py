@@ -4,20 +4,18 @@ import errno
 import select
 import unittest
 
-import os
 import platform
 import socket
 
-from linux_aio import AIOContext, FDsyncBlock, FsyncBlock, PollBlock
+from linux_aio import AIOContext, PollBlock
 
 _linux_ver = tuple(map(int, platform.uname().release.split('-')[0].split('.')))
 
 
-class TestNonRW(unittest.TestCase):
-    @classmethod
-    def tearDownClass(cls) -> None:
-        super().tearDownClass()
-        os.remove('test.txt')
+class TestAIOBlock(unittest.TestCase):
+    def test_non_fileno_obj(self):
+        with self.assertRaises(AttributeError) as assertion:
+            PollBlock(assertion)
 
     def test_poll(self):
         with AIOContext(2) as ctx, \
@@ -101,47 +99,3 @@ class TestNonRW(unittest.TestCase):
                     self.assertEqual(errno.EINVAL, err.errno)
 
         self.assertTrue(ctx.closed)
-
-    def test_fsync(self):
-        with AIOContext(2) as ctx, open('test.txt', 'w') as fp:
-            fp.write('content\n')
-
-            block = FsyncBlock(fp)
-
-            try:
-                submit_ret = ctx.submit(block)
-                self.assertEqual(1, submit_ret)
-
-                events_ret = ctx.get_events(1, 1)
-                self.assertEqual(1, len(events_ret))
-                self.assertIsNone(events_ret[0].buffer)
-                self.assertIsNone(events_ret[0].stripped_buffer())
-                self.assertEqual(0, events_ret[0].response)
-                self.assertEqual(0, events_ret[0].response2)
-            except OSError as err:
-                if _linux_ver >= (4, 18):
-                    raise
-                else:
-                    self.assertEqual(errno.EINVAL, err.errno)
-
-    def test_fdsync(self):
-        with AIOContext(2) as ctx, open('test.txt', 'w') as fp:
-            fp.write('content\n')
-
-            block = FDsyncBlock(fp)
-
-            try:
-                submit_ret = ctx.submit(block)
-                self.assertEqual(1, submit_ret)
-
-                events_ret = ctx.get_events(1, 1)
-                self.assertEqual(1, len(events_ret))
-                self.assertIsNone(events_ret[0].buffer)
-                self.assertIsNone(events_ret[0].stripped_buffer())
-                self.assertEqual(0, events_ret[0].response)
-                self.assertEqual(0, events_ret[0].response2)
-            except OSError as err:
-                if _linux_ver >= (4, 18):
-                    raise
-                else:
-                    self.assertEqual(errno.EINVAL, err.errno)
