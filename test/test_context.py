@@ -37,8 +37,7 @@ class TestContext(unittest.TestCase):
             max_nr = int(fp.read())
 
         with self.assertRaises(OSError) as assertion:
-            with AIOContext(max_nr + 1) as ctx:
-                pass
+            AIOContext(max_nr + 1)
 
         self.assertEqual(errno.EAGAIN, assertion.exception.errno)
 
@@ -65,7 +64,3 @@ class TestContext(unittest.TestCase):
             self.assertTupleEqual(tuple(), events_ret)
 
         self.assertTrue(ctx.closed)
-
-
-if __name__ == '__main__':
-    unittest.main()
