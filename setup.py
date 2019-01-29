@@ -8,7 +8,7 @@ with open('README.md') as fp:
 
 setup(
         name='linux_aio',
-        version='0.4.0',
+        version='0.4.1',
         author='Byeonghoon Yoo',
         author_email='bh322yoo@gmail.com',
         description='Linux aio ABI wrapper',
