@@ -9,6 +9,7 @@
 [![](https://img.shields.io/pypi/pyversions/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
 [![](https://img.shields.io/pypi/wheel/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
 [![](https://img.shields.io/pypi/l/linux_aio.svg?style=flat-square)](https://pypi.org/project/linux-aio/)
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg?style=flat-square)](https://saythanks.io/to/isac322)
 
 Python wrapper module that uses Linux Kernel AIO directly
 
