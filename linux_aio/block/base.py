@@ -100,33 +100,40 @@ class AIOBlock(metaclass=ABCMeta):
             return self
 
         if new_cmd is IOCBCMD.PWRITE:
+            from .non_vector import WriteBlock
             block = WriteBlock.__new__(WriteBlock)
             if self.cmd is not IOCBCMD.PREAD:
                 self._reset_buf()
 
         elif new_cmd is IOCBCMD.PREAD:
+            from .non_vector import ReadBlock
             block = ReadBlock.__new__(ReadBlock)
             if self.cmd is not IOCBCMD.PWRITE:
                 self._reset_buf()
 
         elif new_cmd is IOCBCMD.FSYNC:
+            from .non_rw import FsyncBlock
             block = FsyncBlock.__new__(FsyncBlock)
             self._reset_for_non_rw()
 
         elif new_cmd is IOCBCMD.FDSYNC:
+            from .non_rw import FDsyncBlock
             block = FDsyncBlock.__new__(FDsyncBlock)
             self._reset_for_non_rw()
 
         elif new_cmd is IOCBCMD.POLL:
+            from .non_rw import PollBlock
             block = PollBlock.__new__(PollBlock)
             self._reset_for_non_rw()
 
         elif new_cmd is IOCBCMD.PWRITEV:
+            from .vector import WriteVBlock
             block = WriteVBlock.__new__(WriteVBlock)
             if self.cmd is not IOCBCMD.PREADV:
                 self._reset_buf()
 
         elif new_cmd is IOCBCMD.PREADV:
+            from .vector import ReadVBlock
             block = ReadVBlock.__new__(ReadVBlock)
             if self.cmd is not IOCBCMD.PWRITEV:
                 self._reset_buf()
